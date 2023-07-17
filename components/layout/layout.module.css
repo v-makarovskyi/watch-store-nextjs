@@ -1,0 +1,260 @@
+.layout_container {
+  padding: 0;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  font-size: 1rem;
+  justify-content: center;
+}
+
+.header_top {
+  font-size: 0.7em;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid lightgrey;
+  padding-left: 7rem;
+  padding-right: 3rem;
+}
+
+.header_top_list {
+}
+
+.header_top_list_item {
+  display: inline-block;
+  padding: 0.5em 0.9em;
+}
+
+.header_top_list_item span {
+  border-bottom: 1px dashed red;
+}
+
+.languages {
+  padding: 0 0.8em;
+}
+
+.languages_btn {
+  min-width: 8rem;
+
+  background: rgb(218, 215, 215);
+  border: none;
+  padding: 0.5em 0.9em;
+}
+
+.languages_btn span {
+  color: #a9a9a9;
+  font-size: 1.1em;
+}
+
+.languages_dropdown {
+  background-color: white;
+  position: fixed;
+  min-width: 8rem;
+  z-index: 999;
+}
+
+.languages_dropdown_hidden {
+  display: none;
+}
+
+.languages_dropdown_list {
+  border: 1px solid grey;
+  background: grey;
+}
+
+.languages_dropdown_list_item {
+  padding-top: 0.8em;
+  padding-bottom: 0.8em;
+  padding-left: 0.2em;
+  transition: background 0.3s ease;
+}
+
+.languages_dropdown_list_item button {
+  width: 60%;
+  background: inherit;
+  border: none;
+  color: white;
+  font-size: 1.1em;
+}
+
+.languages_dropdown_list_item:hover {
+  background: rgb(247, 89, 89);
+}
+
+.header_middle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1.5rem;
+  padding-left: 7rem;
+  padding-right: 3rem;
+}
+
+.header_middle_logo {
+  /* font-family: "Lumanosimo", cursive; */
+  font-size: 2rem;
+  color: rgb(61, 23, 23);
+  line-height: 27px;
+  font-weight: bold;
+}
+
+.header_middle_contacts {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.header_middle_contacts_top {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-bottom: 0.3rem;
+}
+
+.header_middle_contacts_top span {
+  color: grey;
+  font-weight: 800;
+  margin-right: 0.5rem;
+}
+
+.header_middle_contacts_top button {
+  background: inherit;
+  border: 1px solid lightgray;
+  border-radius: 10px;
+  transition: border 0.2s ease;
+}
+
+.header_middle_contacts_top button:hover {
+  border: 1px solid gray;
+}
+
+.header_middle_contacts_top_modal {
+  position: fixed;
+  top: 120px;
+  left: 390px;
+  min-width: 20rem;
+  background: rgb(65, 58, 58);
+  color: white;
+  border-radius: 10px;
+}
+
+.header_middle_contacts_top_modal_hidden {
+    display: none;
+}
+
+.header_middle_contacts_top_modal p {
+    font-size: 0.9rem;
+    padding-bottom: 0.5rem;
+}
+
+.header_middle_contacts_top_modal_wrapper {
+  padding: 1rem;
+}
+
+.header_middle_contacts_top_modal_content {
+  padding-top: 1rem;
+}
+
+.header_middle_contacts_top_modal_content h5 {
+  margin-bottom: 0;
+}
+
+.header_middle_contacts_top_modal_content span {
+  font-size: 0.7em;
+}
+.header_middle_contacts_top_modal_content p {
+  font-size: 0.7em;
+  padding-top: 0.5em;
+}
+
+.header_middle_contacts_bottom {
+  display: flex;
+  align-items: center;
+}
+
+.header_middle_contacts_bottom button {
+  background: inherit;
+  border: none;
+  padding-left: 0;
+  padding-right: 0;
+  font-size: 0.8rem;
+  color: red;
+}
+
+.header_middle_contacts_bottom button:first-child {
+  border-bottom: 1px dashed red;
+  margin-right: 5px;
+}
+
+.header_middle_search {
+    position: relative;
+    width: 350px;
+}
+.header_middle_search input {
+    width: 100%;
+    padding: 0.9rem 0.4rem;
+    background: lightgrey;
+    border: none;
+    border-radius: 20px;
+    outline: none;
+    caret-color: grey;
+}
+
+.header_middle_search input:hover {
+    background: white;
+    border: 1px dashed lightgray;
+}
+
+.header_middle_icons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header_middle_icons svg {
+    margin: 1rem;
+}
+
+.cart {
+    position: relative;
+}
+
+.cart span {
+    position: absolute;
+    top: 7px;
+    right: 5px;
+    font-size: 1.2rem;
+    width: 1.6rem;
+    height: 1.6rem;
+    background: greenyellow;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.header_bottom {
+    margin-top: 1rem;
+    background: red;
+    padding-left: 7rem;
+    padding-right: 3rem;
+}
+
+.header_bottom_list {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+}
+
+.header_bottom_list_item {
+    padding: 1rem;
+    border-left: 1px solid lightgrey;
+    color: white;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+.header_bottom_list_item:last-child {
+    border-right: 1px solid lightgray;
+}
