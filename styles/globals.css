@@ -1,0 +1,52 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Lumanosimo&display=swap');
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: 'Open Sans', sans-serif !important;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+h1,
+h2,
+p,
+ul {
+  margin: 0;
+}
+
+ul {
+  padding: 0 !important;
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* /// Carousel /// */
+.carousel-control-prev,
+.carousel-control-next {
+  display: none;
+}
+
+.carousel-indicators {
+  bottom: -60px !important;
+}
+
+.carousel-indicators button {
+  background-color: rgb(53, 52, 52) !important;
+  width: 14px !important;
+  height: 14px !important;
+  border-radius: 50%;
+  margin-right: .9rem !important;
+}
