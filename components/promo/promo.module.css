@@ -1,0 +1,48 @@
+.promo {
+  background: rgb(153, 146, 146);
+  padding: 4rem 4rem 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.promo_title {
+  text-align: start;
+  color: #ffffff;
+  line-height: 30px;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.promo_wrapper {
+    padding-top: .5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.1rem;
+}
+
+.promo_wrapper_card {
+    
+    background: #ffffff;
+}
+
+.promo_img_container img {
+    width: 100%;
+    object-fit: cover;
+}
+
+.promo_wrapper_card_content {
+    padding: 2rem;
+    font-size: 0.9rem;
+}
+
+.promo_btn {
+    margin-top: 1rem;
+    padding: .8rem .7rem;
+    width: 18%;
+    background: #000;
+    color: white;
+    border-radius: 40px;
+    border: none;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
