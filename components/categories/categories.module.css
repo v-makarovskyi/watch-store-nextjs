@@ -1,0 +1,36 @@
+.categories {
+    padding: 4rem 4rem 2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.categories_title {
+   text-align: center;
+   color: #434343;
+   line-height: 30px;
+   font-size: 1.2rem;
+   font-weight: 600;
+}
+
+.categories_wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.categories_card {
+    background: lightgrey;
+    padding: .6rem;
+    width: 24%;
+    border-radius: 20px;
+    position: relative;
+}
+
+.categories_card_title {
+    color: #ffffff;
+    font-size: 2rem;
+    position: absolute;
+    left: 20px;
+    font-weight: 800;
+    text-shadow: 2px 2px grey;
+}
