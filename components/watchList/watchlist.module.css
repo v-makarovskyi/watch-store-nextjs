@@ -1,0 +1,36 @@
+.watchlist {
+    padding: 2rem 1rem 2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.watchlist_filter {
+    text-align: center;
+}
+
+.watchlist_filter_btn {
+    margin-left: 0.8rem;
+    padding: .8rem .7rem;
+    background: lightgray;
+    color: #ffffff;
+    border-radius: 40px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    border: 1px solid lightgray;
+}
+
+.watchlist_filter_btn_active {
+    border-color: red;
+    color: red;
+    background: #ffffff;
+}
+
+.watchlist_card_wrapper {
+    padding-top: 1.5rem;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+
+
