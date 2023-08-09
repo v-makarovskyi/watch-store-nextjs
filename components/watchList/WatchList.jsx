@@ -3,17 +3,45 @@ import styles from "./watchlist.module.css";
 import WatchCard from "../watchcard/WatchCard";
 import Button from "../button/Button";
 
-export default function WatchList({ home }) {
+export default function WatchList({ home, watchs }) {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [hitWatchs, setHitWatchs] = useState([])
+  const [newWatchs, setNewWatchs] = useState([])
+
+  const handleHitProducts = () => {
+    const hitProducts = watchs.filter((watch) => watch.hit === true)
+    setHitWatchs(hitProducts)
+  }
+
+  const handleNewProducts = () => {
+    const newProducts = watchs.filter((watch) => watch.new === true)
+    setNewWatchs(newProducts)
+  }
+
   return (
     <div className={styles.watchlist}>
       {home && (
         <div className={styles.watchlist_filter}>
           <Button
-            isActive={activeIndex === 0}
-            onClick={() => setActiveIndex(0)}
+            onClick={() => {
+              setActiveIndex(0)
+              handleNewProducts()
+            }}
             className={
               activeIndex === 0
+                ? `${styles.watchlist_filter_btn} ${styles.watchlist_filter_btn_active}`
+                : styles.watchlist_filter_btn
+            }
+          >
+            ПОКАЗАТЬ ВСЕ ЧАСЫ
+          </Button>
+          <Button
+            onClick={() => {
+              setActiveIndex(1)
+              handleNewProducts()
+            }}
+            className={
+              activeIndex === 1
                 ? `${styles.watchlist_filter_btn} ${styles.watchlist_filter_btn_active}`
                 : styles.watchlist_filter_btn
             }
@@ -21,9 +49,12 @@ export default function WatchList({ home }) {
             НОВИНКИ В МАГАЗИНІ
           </Button>
           <Button
-            onClick={() => setActiveIndex(1)}
+            onClick={() => {
+              setActiveIndex(2)
+              handleHitProducts()
+            }}
             className={
-              activeIndex === 1
+              activeIndex === 2
                 ? `${styles.watchlist_filter_btn} ${styles.watchlist_filter_btn_active}`
                 : styles.watchlist_filter_btn
             }
@@ -33,12 +64,12 @@ export default function WatchList({ home }) {
         </div>
       )}
       <div className={styles.watchlist_card_wrapper} style={{justifyContent: home ? 'center' : 'flex-start'}}>
-        <WatchCard />
-        <WatchCard />
-        <WatchCard />
-        <WatchCard />
-        <WatchCard />
-      </div>
+          {
+             (activeIndex === 1 ? newWatchs : activeIndex === 2 ? hitWatchs : watchs)?.map(w => (
+              <WatchCard key={w.id} item={w} />
+            ))
+          }
+      </div> 
     </div>
   );
 }
