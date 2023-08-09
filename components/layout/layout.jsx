@@ -9,7 +9,7 @@ export const siteTitle = "watch-store-nextjs";
 
 
 export default function Layout({ children }) {
- 
+
   return (
     <Container fluid className={styles.layout_container}>
       <Head>
