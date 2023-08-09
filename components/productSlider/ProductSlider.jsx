@@ -1,29 +1,20 @@
 import React from "react";
 import ImageGallery from "react-image-gallery";
 
-const images = [
-  {
-    original: "/images/watch/tissot1.webp",
-    thumbnail: "/images/watch/tissot1.webp",
-  },
-  {
-    original: "/images/watch/tissot2.webp",
-    thumbnail: "/images/watch/tissot2.webp",
-  },
-  {
-    original: "/images/watch/tissot3.webp",
-    thumbnail: "/images/watch/tissot3.webp",
-  },
-  {
-    original: "/images/watch/tissot4.webp",
-    thumbnail: "/images/watch/tissot4.webp",
-  },
-];
 
-export default function ProductSlider() {
+export default function ProductSlider({ images }) {
+  const imgs = images.map((img) => {
+    const item = {
+       original: img.image,
+       thumbnail: img.image
+    }
+    return item
+  }) 
+  
+
   return (
     <ImageGallery
-      items={images}
+      items={imgs}
       thumbnailPosition="left"
       showNav={false}
       showFullscreenButton={false}
