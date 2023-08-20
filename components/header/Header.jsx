@@ -1,5 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "./header.module.css";
+import Link from "next/link";
+import { useGetCategoriesQuery, useGetBrandsQuery } from "../../redux/watchsApi";
+import axiosElement from "../../utils/axios-element";
 
 const languages = [
   { id: 1, flag: "🇺🇦", title: "Українська" },
@@ -7,15 +11,11 @@ const languages = [
   { id: 3, flag: "🇷🇺", title: "Русский" },
 ];
 
-const categories = [
-  { id: 1, title: "Бренди", path: "/" },
-  { id: 2, title: "Наручні годинники", path: "/" },
-  { id: 3, title: "Чоловічі", path: "/" },
-  { id: 4, title: "Жіночі", path: "/" },
-  { id: 5, title: "Інтер'єрні годинники", path: "/" },
-];
-
 export default function Header() {
+  
+  const { data: categories } = useGetCategoriesQuery()
+  const { data: brands } = useGetBrandsQuery()
+ 
   const [currentLanguage, setCurrentLanguage] = useState({
     id: 1,
     flag: "🇺🇦",
@@ -23,11 +23,8 @@ export default function Header() {
   });
   const [showLanguagesList, setShowLangugesList] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [activeCategory, setActiveCategory] = useState({
-    id: 1,
-    title: "Бренди",
-    path: "/",
-  });
+  const [activeCategory, setActiveCategory] = useState({});
+  const [showBrands, setShowBrands] = useState(false);
 
   function handleSelectLanguage(itemId) {
     const nextCurrentLanguage = languages.find((lang) => lang.id === itemId);
@@ -35,10 +32,10 @@ export default function Header() {
     setShowLangugesList(false);
   }
 
-  function handleActiveCategory(catId) {
-    const nextCategory = categories.filter(
-      (category) => category.id === catId
-    )[0];
+  function handleActiveCategory(categoryId) {
+    const nextCategory = categories.find(
+      (category) => category.id === categoryId
+    );
     setActiveCategory(nextCategory);
   }
 
@@ -110,7 +107,9 @@ export default function Header() {
       {/* Header Middle */}
       <div className={styles.header_middle}>
         <div className={styles.header_middle_logo}>
-          <span>WATCH-STORE</span>
+          <Link href="/">
+            <span>WATCH-STORE</span>
+          </Link>
         </div>
         <div className={styles.header_middle_contacts}>
           <div className={styles.header_middle_contacts_top}>
@@ -164,7 +163,7 @@ export default function Header() {
         <div className={styles.header_middle_search}>
           <input type="text" />
           <i
-            class="bi bi-search"
+            className="bi bi-search"
             style={{
               fontSize: "1.5rem",
               position: "absolute",
@@ -186,21 +185,67 @@ export default function Header() {
       {/*  Header Bottom */}
       <div className={styles.header_bottom}>
         <ul className={styles.header_bottom_list}>
-          {categories.map((category) => (
-            <li key={category.id} className={styles.header_bottom_list_item}>
-              <button
-                className={
-                  activeCategory.id === category.id
-                    ? `${styles.header_bottom_list_item_btn} ${styles.header_bottom_list_item_btn_active}`
-                    : `${styles.header_bottom_list_item_btn}`
-                }
-                onClick={() => handleActiveCategory(category.id)}
+          {categories?.map((category) =>
+            category.name === "Бренд" ? (
+              <li
+                key={category.id}
+                className={styles.header_bottom_list_item}
               >
-                {category.title}
-              </button>
-            </li>
-          ))}
+                <button
+                  className={
+                    activeCategory.id === category.id
+                      ? `${styles.header_bottom_list_item_btn} ${styles.header_bottom_list_item_btn_active}`
+                      : `${styles.header_bottom_list_item_btn}`
+                  }
+                  onClick={() => {
+                    handleActiveCategory(category.id);
+                    setShowBrands(!showBrands);
+                  }}
+                >
+                  {category.name}
+                </button>
+              </li>
+            ) : (
+              <Link href={`/categories/${category.slug}`}>
+                <li
+                  key={category.id}
+                  className={styles.header_bottom_list_item}
+                >
+                  <button
+                    className={
+                      activeCategory.id === category.id
+                        ? `${styles.header_bottom_list_item_btn} ${styles.header_bottom_list_item_btn_active}`
+                        : `${styles.header_bottom_list_item_btn}`
+                    }
+                    onClick={() => {
+                      handleActiveCategory(category.id);
+                    }}
+                  >
+                    {category.name}
+                  </button>
+                </li>
+              </Link>
+            )
+          )}
         </ul>
+        {activeCategory.name === "Бренд" && (
+          <div
+            className={
+              !showBrands
+                ? `${styles.header_bottom_brandslist_hidden}`
+                : `${styles.header_bottom_brandslist}`
+            }
+          >
+            <ul>
+              {activeCategory.name === "Бренд" &&
+                brands.map((item, index) => (
+                  <Link href={`/brand/${item.slug}`}>
+                    <li key={item.name}>{item.title}</li>
+                  </Link>
+                ))} 
+            </ul>
+          </div>
+        )}
       </div>
     </header>
   );
