@@ -1,0 +1,62 @@
+.container {
+  margin-top: 3rem;
+  padding: 2.5rem 1rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.message {
+  color: red;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.btns {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-top: 1rem;
+  width: 30%;
+}
+
+.error_btn {
+  min-width: 9rem;
+  padding: 0.4rem;
+  cursor: pointer;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.error_btn i {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.error_btn.error_btn_prev {
+  margin-right: 0.5rem;
+  background: green;
+  color: white;
+}
+
+.error_btn.error_btn_main {
+  margin-left: 0.5rem;
+  color: white;
+  background: red;
+}
+
+.error_btn.error_btn_prev:hover {
+  background: rgb(62, 56, 242);
+  color: white;
+}
+
+.error_btn.error_btn_main:hover {
+  color: white;
+  background: rgb(62, 56, 242);
+}
