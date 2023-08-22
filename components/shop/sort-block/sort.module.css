@@ -1,7 +1,14 @@
+.container {
+  position: relative; 
+  width: 100%;
+  height: 4rem;
+}
+
+
 .brand_sort {
   position: absolute;
-  top: 15px;
-  right: 100px;
+  top: 1rem;
+  right: 0;
   width: 4rem;
   height: 4rem;
   display: flex;
@@ -29,7 +36,7 @@
 .brand_sort_dropdown {
   background: #ffffff;
   border: 1px solid lightgray;
-  width: 14rem;
+  width: 12rem;
   padding: 0;
   z-index: 999;
   position: absolute;
@@ -63,21 +70,26 @@
   border-bottom: 1px dotted crimson;
 }
 
-.brand_sort_dropdown_list_item button {
+.brand_sort_dropdown_list_item .btn_sort {
   width: 100%;
   height: 100%;
   padding: .6rem .5rem;
   text-align: left;
   border: none;
   background: inherit;
-  font-weight: 700;
+  font-weight: 500;
   color: red;
+}
+
+.btn_sort.btn_sort_active {
+    color: #960909;
+    font-weight: 900;
 }
 
 .brand_sort_dropdown_list_item:hover {
   background: red;
 }
 
-.brand_sort_dropdown_list_item button:hover {
+.brand_sort_dropdown_list_item .btn_sort:hover {
     color: white;
 }
