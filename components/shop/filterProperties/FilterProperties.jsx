@@ -8,18 +8,19 @@ import {
   glassFilterData,
   wristbandFilterData,
 } from "../../../data/filterData";
+import FilterPropertiesLoader from "../../loader/shop/FilterPropertiesLoader";
 import ErrorMsg from "../../common/errorMsg/ErrorMsg";
 import styles from "./filterProperties.module.css";
 
 export const ResetButton = ({ pathname }) => {
   const router = useRouter();
   return (
-    <button 
-      className={styles.resetButton} 
+    <button
+      className={styles.resetButton}
       onClick={() => {
-        router.push(pathname)
+        router.push(pathname);
       }}
-      >
+    >
       Сбросить фильтры
     </button>
   );
@@ -27,6 +28,7 @@ export const ResetButton = ({ pathname }) => {
 
 const FilterProperties = ({ showProperties, brandPage, categoryPage }) => {
   const router = useRouter();
+  const { isLoading } = router;
   const brandSlug = router.query.brandSlug;
   const categorySlug = router.query.categorySlug;
 
@@ -57,7 +59,7 @@ const FilterProperties = ({ showProperties, brandPage, categoryPage }) => {
           type +
           watch_brand +
           glass_type +
-          wristband_type,
+          wristband_type
       );
     }
   }, [watchType, watchBrand, wristband, glass]);
@@ -94,136 +96,151 @@ const FilterProperties = ({ showProperties, brandPage, categoryPage }) => {
     }
   }
 
+  let content = null;
+  content = <FilterPropertiesLoader loading={isLoading} width='100' filterProperties/>;
+  
+ if (isLoading) {
+    content = <FilterPropertiesLoader loading={isLoading} />;
+  } else {
+    content = (
+      <>
+        {categorySlug !== "zhinochi" && categorySlug !== "cholovichi" && (
+          <>
+            {watchtypeFilterData.map((wt) => (
+              <div key={wt.id} className={styles.brand_container_properties}>
+                <div className={styles.brand_container_properties_top}>
+                  <h4>{wt.title}</h4>
+                </div>
+                <div
+                  className={
+                    showProperties
+                      ? styles.brand_container_variants
+                      : styles.brand_container_variants_hidden
+                  }
+                >
+                  {wt.variants.map((v, i) => (
+                    <label key={i}>
+                      <input
+                        type="checkbox"
+                        name=""
+                        value={v.value}
+                        onChange={handleWatchType}
+                        checked={
+                          router.query.watch_type === v.value
+                            ? "checked"
+                            : false
+                        }
+                      />
+                      {v.name}
+                    </label>
+                  ))}
+                </div>
+                <hr />
+              </div>
+            ))}
+          </>
+        )}
+
+        {!brandPage && (
+          <>
+            {brandFilterData.map((bf) => (
+              <div key={bf.id} className={styles.brand_container_properties}>
+                <div className={styles.brand_container_properties_top}>
+                  <h4>{bf.title}</h4>
+                </div>
+                <div
+                  className={
+                    showProperties
+                      ? styles.brand_container_variants
+                      : styles.brand_container_variants_hidden
+                  }
+                >
+                  {bf.variants.map((v, i) => (
+                    <label key={i}>
+                      <input
+                        type="checkbox"
+                        name=""
+                        value={v.value}
+                        onChange={handleWatchBrand}
+                        checked={
+                          router.query.brand === v.value ? "checked" : false
+                        }
+                      />
+                      {v.name}
+                    </label>
+                  ))}
+                </div>
+                <hr />
+              </div>
+            ))}
+          </>
+        )}
+
+        {glassFilterData.map((gf) => (
+          <div key={gf.id} className={styles.brand_container_properties}>
+            <div className={styles.brand_container_properties_top}>
+              <h4>{gf.title}</h4>
+            </div>
+            <div
+              className={
+                showProperties
+                  ? styles.brand_container_variants
+                  : styles.brand_container_variants_hidden
+              }
+            >
+              {gf.variants.map((v, i) => (
+                <label key={i}>
+                  <input
+                    type="checkbox"
+                    name=""
+                    value={v.value}
+                    onChange={handleGlassType}
+                    checked={router.query.glass === v.value ? "checked" : false}
+                  />
+                  {v.name}
+                </label>
+              ))}
+            </div>
+            <hr />
+          </div>
+        ))}
+
+        {wristbandFilterData.map((wf) => (
+          <div key={wf.id} className={styles.brand_container_properties}>
+            <div className={styles.brand_container_properties_top}>
+              <h4>{wf.title}</h4>
+            </div>
+            <div
+              className={
+                showProperties
+                  ? styles.brand_container_variants
+                  : styles.brand_container_variants_hidden
+              }
+            >
+              {wf.variants.map((v, i) => (
+                <label key={i}>
+                  <input
+                    type="checkbox"
+                    name=""
+                    value={v.value}
+                    onChange={handleWristbandType}
+                    checked={
+                      router.query.wristband === v.value ? "checked" : false
+                    }
+                  />
+                  {v.name}
+                </label>
+              ))}
+            </div>
+          </div>
+        ))}
+      </>
+    );
+  }
+
   return (
     <div className="filters_wrapper">
-      {categorySlug !== "zhinochi" && categorySlug !== "cholovichi" && (
-        <>
-          {watchtypeFilterData.map((wt) => (
-            <div key={wt.id} className={styles.brand_container_properties}>
-              <div className={styles.brand_container_properties_top}>
-                <h4>{wt.title}</h4>
-              </div>
-              <div
-                className={
-                  showProperties
-                    ? styles.brand_container_variants
-                    : styles.brand_container_variants_hidden
-                }
-              >
-                {wt.variants.map((v, i) => (
-                  <label key={i}>
-                    <input
-                      type="checkbox"
-                      name=""
-                      value={v.value}
-                      onChange={handleWatchType}
-                      checked={
-                        router.query.watch_type === v.value ? "checked" : false
-                      }
-                    />
-                    {v.name}
-                  </label>
-                ))}
-              </div>
-              <hr />
-            </div>
-          ))}
-        </>
-      )}
-
-      {!brandPage && (
-        <>
-          {brandFilterData.map((bf) => (
-            <div key={bf.id} className={styles.brand_container_properties}>
-              <div className={styles.brand_container_properties_top}>
-                <h4>{bf.title}</h4>
-              </div>
-              <div
-                className={
-                  showProperties
-                    ? styles.brand_container_variants
-                    : styles.brand_container_variants_hidden
-                }
-              >
-                {bf.variants.map((v, i) => (
-                  <label key={i}>
-                    <input
-                      type="checkbox"
-                      name=""
-                      value={v.value}
-                      onChange={handleWatchBrand}
-                      checked={
-                        router.query.brand === v.value ? "checked" : false
-                      }
-                    />
-                    {v.name}
-                  </label>
-                ))}
-              </div>
-              <hr />
-            </div>
-          ))}
-        </>
-      )}
-
-      {glassFilterData.map((gf) => (
-        <div key={gf.id} className={styles.brand_container_properties}>
-          <div className={styles.brand_container_properties_top}>
-            <h4>{gf.title}</h4>
-          </div>
-          <div
-            className={
-              showProperties
-                ? styles.brand_container_variants
-                : styles.brand_container_variants_hidden
-            }
-          >
-            {gf.variants.map((v, i) => (
-              <label key={i}>
-                <input
-                  type="checkbox"
-                  name=""
-                  value={v.value}
-                  onChange={handleGlassType}
-                  checked={router.query.glass === v.value ? "checked" : false}
-                />
-                {v.name}
-              </label>
-            ))}
-          </div>
-          <hr />
-        </div>
-      ))}
-
-      {wristbandFilterData.map((wf) => (
-        <div key={wf.id} className={styles.brand_container_properties}>
-          <div className={styles.brand_container_properties_top}>
-            <h4>{wf.title}</h4>
-          </div>
-          <div
-            className={
-              showProperties
-                ? styles.brand_container_variants
-                : styles.brand_container_variants_hidden
-            }
-          >
-            {wf.variants.map((v, i) => (
-              <label key={i}>
-                <input
-                  type="checkbox"
-                  name=""
-                  value={v.value}
-                  onChange={handleWristbandType}
-                  checked={
-                    router.query.wristband === v.value ? "checked" : false
-                  }
-                />
-                {v.name}
-              </label>
-            ))}
-          </div>
-        </div>
-      ))}
+      {content}
       <ResetButton
         pathname={
           categoryPage ? `/categories/${categorySlug}?` : `/brand/${brandSlug}?`
