@@ -8,7 +8,9 @@ function SingleLoader({ loading, width }) {
       aria-label="price-filter-loader"
       style={{
         height: `${width}px`,
-        textAlign: "center",
+        display:'flex',
+        alignItems:'center',
+        justifyContent:'center',
       }}
     >
       <Loader loading={loading} spinner="propagate" />
