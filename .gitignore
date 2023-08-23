@@ -175,3 +175,5 @@ GitHub.sublime-settings
 .history
 
 staticfiles/
+migrations/
+static/
