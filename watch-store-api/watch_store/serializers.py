@@ -32,7 +32,7 @@ class WatchSerializer(serializers.ModelSerializer):
         model = Watch
         fields = ['id', 'category', 'title', 'model', 'brand',
                   'country_production', 'watch_type', 'appearance_type',
-                  'glass', 'wristband', 'slug', 'description', 'price', 'watch_image',
+                  'glass', 'wristband', 'slug', 'description', 'discount', 'price', 'watch_image',
                   'slug', 'is_active', 'new', 'hit', 'created_at', 'update_at']
     
 
