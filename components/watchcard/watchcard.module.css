@@ -1,0 +1,138 @@
+.watchlist_card {
+    position: relative;
+    height: 390px;
+    margin-left: .5rem;
+    max-width: 15rem;
+    margin-bottom: 1rem;
+    padding: .8rem .7rem .8rem;
+    border: 1px solid lightgray;
+    border-radius: 1.3rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.watchlist_card_badge {
+    position: absolute;
+    top: 35px;
+    left: 5px;
+    width: 2.3rem;
+    height: 1.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: green;
+    color: #ffffff;
+    font-weight: 500;
+    border-radius: 20px;
+    font-size: .9rem;
+    border: none;
+}
+
+.watchlist_card_id {
+    color: lightgray;
+    font-size: 0.7rem;
+}
+
+.watchlist_card_img_container {
+    align-self: center;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.watchlist_card_brand {
+    font-size: 0.6rem;
+    align-self: flex-end;
+    width: 48px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: lightgray;
+    border-radius: 20px;
+}
+
+.watchlist_card_brand_detail {
+    width: 50%;
+    padding-top: .5rem;
+    font-size: .7rem;
+    font-weight: 500;
+    color: #434343;
+}
+
+.watchlist_card_price {
+    align-self: flex-end;
+    color: #434343;
+    font-size: 1.4rem;
+    font-weight: 800;
+    padding-bottom: 1rem;
+}
+
+.watchlist_card_select {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.watchlist_card_select button {
+    width: 70%;
+    padding: .6rem .8rem;
+    border: none;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    font-size: .7rem;
+    font-weight: 800;
+    transition: background .3s ease-in-out;
+}
+
+.watchlist_card_select button:hover {
+    background: #ff7893;
+}
+
+.watchlist_card_select_img_wrapper {
+    padding: .6rem;
+    transition: all .1s ease-in-out;
+}
+
+.watchlist_card_select_img_wrapper i {
+    padding: .5rem;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e8e2e2;
+    border-radius: 50%;
+    cursor: pointer;
+   
+}
+
+.watchlist_card_select_img_wrapper i:hover {
+    color: red;
+}
+
+.watchlist_card_select_hidden {
+    width: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.watchlist_card_select_hidden i {
+    padding: 1.2rem;
+    font-size: 1.1rem;
+    cursor: pointer;
+    color: #434343;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    background: #e8e2e2;
+    border-radius: 50%;
+}
+
