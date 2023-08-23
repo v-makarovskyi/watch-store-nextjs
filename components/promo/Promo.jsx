@@ -1,4 +1,5 @@
 import styles from "./promo.module.css";
+import Button from "../button/Button";
 
 const promo = [
   {
@@ -33,7 +34,7 @@ export default function Promo() {
           </div>
         ))}
       </div>
-      <button className={styles.promo_btn}>СПИСОК УСІХ ПРОМО-АКЦІЙ</button>
+      <Button className={styles.promo_btn}>СПИСОК УСІХ ПРОМО-АКЦІЙ</Button>
     </div>
   );
 }
