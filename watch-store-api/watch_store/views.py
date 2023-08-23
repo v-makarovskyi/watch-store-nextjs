@@ -4,6 +4,8 @@ from rest_framework import generics, permissions, authentication
 from rest_framework.generics import GenericAPIView
 from .models import Watch, Category, Brand
 from .serializers import WatchSerializer, CategorySerializer, BrandSerializer
+from .filters import WatchFilter
+
 from django.shortcuts import render, get_object_or_404
 
 
@@ -12,6 +14,8 @@ class WatchListView(generics.ListAPIView):
     queryset = Watch.objects.filter(
         is_active=True).prefetch_related('watch_image')
     serializer_class = WatchSerializer
+    filterset_class = WatchFilter
+    
 
 
 class WatchView(generics.RetrieveAPIView):
@@ -19,7 +23,7 @@ class WatchView(generics.RetrieveAPIView):
     queryset = Watch.objects.filter(is_active=True)
     serializer_class = WatchSerializer
 
-class CategoriesTree(GenericAPIView):
+class Categories(GenericAPIView):
     serializer_class = CategorySerializer
     queryset = Category.objects.filter(is_active=True)
 
@@ -45,6 +49,7 @@ class CategorySingle(generics.RetrieveAPIView):
 
 class CategoryItemProductsListView(generics.ListAPIView):
     serializer_class = WatchSerializer
+    filterset_class = WatchFilter
 
     def get_queryset(self):
         self.category = get_object_or_404(Category, slug=self.kwargs['slug'])
@@ -61,6 +66,7 @@ class BrandSingleView(generics.RetrieveAPIView):
 
 class BrandItemProductListView(generics.ListAPIView):
     serializer_class = WatchSerializer
+    filterset_class = WatchFilter
 
     def get_queryset(self):
         self.brand = get_object_or_404(Brand, slug=self.kwargs['slug'])
