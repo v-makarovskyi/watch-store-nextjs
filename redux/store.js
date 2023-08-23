@@ -1,6 +1,7 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { createWrapper } from "next-redux-wrapper";
 import { watchsApi } from "./watchsApi";
+import sortReducer from './sortSlice'
 /* import productsReducer from "./products/productReducer";
 import categoriesReducer from "./categories/categoriesReduser";
 import brandsReducer from "./brands/brandsSlice"; */
@@ -9,7 +10,8 @@ import brandsReducer from "./brands/brandsSlice"; */
 export const makeStore = () => 
   configureStore({
     reducer: {
-      [watchsApi.reducerPath]: watchsApi.reducer
+      [watchsApi.reducerPath]: watchsApi.reducer,
+      sort: sortReducer,
     },
     middleware: (gDM) => gDM().concat(watchsApi.middleware)
   })
