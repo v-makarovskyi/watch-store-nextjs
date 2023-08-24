@@ -52,5 +52,30 @@ export const wristbandFilterData = [
     ],
   },
 ]
+
+
+export const colorsFilterData = [
+  {
+    id: 4,
+    keyword: "colors",
+    title: "Выбрать цвет",
+    variants: [
+      {id: '0', name: "Черный", value: "black" },
+      {id: '1', name: "Желтый", value: "yellow" },
+      {id: '2', name: "Зеленый", value: "green" },
+      {id: '3', name: "Синий", value: "blue" },
+      {id: '4', name: "Красный", value: "red" },
+      {id: '5', name: "Розовый", value: "pink" },
+      {id: '6', name: "Светлосерый", value: "lightgrey" },
+      {id: '7', name: "Темносерый", value: "darkgrey" },
+      {id: '8', name: "Светлозеленый", value: "lightgreen" },
+      {id: '9', name: "Бирюзовый", value: "turquoise" },
+      {id: '10', name: "Фиолетовый", value: "violet" },
+      {id: '11', name: "Голубой", value: "lightblue" },
+    ],
+  },
+]
+
+
   
   
