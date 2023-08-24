@@ -1,8 +1,12 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { clearSortBy } from "../../redux/sortSlice";
 import styles from "./header.module.css";
 import Link from "next/link";
-import { useGetCategoriesQuery, useGetBrandsQuery } from "../../redux/watchsApi";
+import {
+  useGetCategoriesQuery,
+  useGetBrandsQuery,
+} from "../../redux/watchsApi";
 import axiosElement from "../../utils/axios-element";
 
 const languages = [
@@ -12,10 +16,11 @@ const languages = [
 ];
 
 export default function Header() {
-  
-  const { data: categories } = useGetCategoriesQuery()
-  const { data: brands } = useGetBrandsQuery()
- 
+  const dispatch = useDispatch();
+
+  const { data: categories } = useGetCategoriesQuery();
+  const { data: brands } = useGetBrandsQuery();
+
   const [currentLanguage, setCurrentLanguage] = useState({
     id: 1,
     flag: "🇺🇦",
@@ -187,10 +192,7 @@ export default function Header() {
         <ul className={styles.header_bottom_list}>
           {categories?.map((category) =>
             category.name === "Бренд" ? (
-              <li
-                key={category.id}
-                className={styles.header_bottom_list_item}
-              >
+              <li key={category.id} className={styles.header_bottom_list_item}>
                 <button
                   className={
                     activeCategory.id === category.id
@@ -219,6 +221,7 @@ export default function Header() {
                     }
                     onClick={() => {
                       handleActiveCategory(category.id);
+                      dispatch(clearSortBy());
                     }}
                   >
                     {category.name}
@@ -240,9 +243,14 @@ export default function Header() {
               {activeCategory.name === "Бренд" &&
                 brands.map((item, index) => (
                   <Link href={`/brand/${item.slug}`}>
-                    <li key={item.name}>{item.title}</li>
+                    <li onClick={() => {
+                      dispatch(clearSortBy())
+                      setShowBrands(false)
+                    }} key={item.name}>
+                      {item.title}
+                    </li>
                   </Link>
-                ))} 
+                ))}
             </ul>
           </div>
         )}
