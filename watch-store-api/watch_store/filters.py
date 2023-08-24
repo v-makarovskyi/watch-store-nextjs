@@ -4,7 +4,7 @@ from .models import Watch
 class WatchFilter(filters.FilterSet):
     class Meta:
         model = Watch
-        fields = ['watch_type', 'glass', 'wristband']
+        fields = ['watch_type', 'glass', 'wristband', 'color']
             
     brand = filters.CharFilter(field_name='brand__title', lookup_expr='iexact')
     
