@@ -90,6 +90,21 @@ class Watch(models.Model):
         ('fash', 'fashion'),
     ]
 
+    COLOR_TYPE = [
+      ("black", "Черный",),
+      ("yellow","Желтый",),
+      ("green", "Зеленый",),
+      ("blue", "Синий",),
+      ("red", "Красный",),
+      ("pink", "Розовый",),
+      ("lightgrey", "Светлосерый",),
+      ("darkgrey", "Темносерый",),
+      ("lightgreen", "Светлозеленый",),
+      ("turquoise", "Бирюзовый",),
+      ("violet", "Фиолетовый",),
+      ("lightblue", "Голубой", ),
+    ]
+
     class Meta:
         verbose_name = _('часы')
         verbose_name_plural = _('каталог часов')
@@ -113,6 +128,7 @@ class Watch(models.Model):
         _('тип стекла'), max_length=40, help_text='* тип стекла', choices=GLASS_TYPE)
     wristband = models.CharField(
         _('браслет'), max_length=100, help_text='* тип браслета', choices=WRISTBAND_TYPE)
+    color = models.CharField(_('Цвет'), max_length=40, help_text='* цвет изделия', choices=COLOR_TYPE, null=True)
     description = RichTextUploadingField(
         'описание', help_text='необязательно', blank=True)
     slug = models.SlugField(max_length=255)
