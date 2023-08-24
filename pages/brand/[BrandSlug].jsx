@@ -1,42 +1,130 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import Head from "next/head";
-import { useRouter } from "next/router";
-import { useSelector, dispatch, useDispatch } from "react-redux";
-import axiosElement from "../../utils/axios-element";
-import DOMPurify from 'isomorphic-dompurify';
+import { useParams, usePathname, useSearchParams } from "next/navigation";
+
+import DOMPurify from "isomorphic-dompurify";
 import Layout from "../../components/layout/Layout";
 import { Row, Col, Breadcrumb } from "react-bootstrap";
 import WatchList from "../../components/watchList/WatchList";
-import { wrapper } from "../../redux/store";
-import styles from "./brand.module.css";
-import { fetchSingleBrand, fetchWatchsFromRelatedBrand } from "../../redux/brands/brandsSlice";
+import FilterProperties from "../../components/shop/shop-filters/FilterProperties";
 
+import Sort from "../../components/shop/sort-block/Sort";
+import ErrorMsg from "../../components/common/errorMsg/ErrorMsg";
+
+import { wrapper } from "../../redux/store";
+import {
+  getBrand,
+  getRunningQueriesThunk,
+  useGetBrandQuery,
+  getBrandListWatch,
+  useGetBrandListWatchQuery,
+} from "../../redux/watchsApi";
+import styles from "./brand.module.css";
 
 export const getServerSideProps = wrapper.getServerSideProps(
-    (store) => 
-    async ({ query }) => {
-        const BrandSlug = query.BrandSlug
-        await store.dispatch(fetchSingleBrand(BrandSlug))
-        await store.dispatch(fetchWatchsFromRelatedBrand(BrandSlug))
-        const { brands } = store.getState()
+  (store) => async (context) => {
+    const brandSlug = context.query.brandSlug;
+   store.dispatch(getBrand.initiate(brandSlug));
+    store.dispatch(
+      getBrandListWatch.initiate({ slug: brandSlug, queryParams: {} })
+    );
+    await Promise.all(store.dispatch(getRunningQueriesThunk()));
 
-        return {
-            props: {
-                brand: brands.server.brand,
-                products: brands.server.productsForBrand,
-            }
-        }
-    }
-)
+    return {
+      props: {
+        query: context.query,
+      },
+    };
+  }
+);
 
-export default function Brand({ brand, products }) {
+export default function Brand({ query }) {
+  const brandSlug = query.brandSlug;
+  const queryParams = {};
+  if (query.watch_type) {
+    queryParams["watch_type"] = query.watch_type;
+  }
+  if (query.glass) {
+    queryParams["glass"] = query.glass;
+  }
+  if (query.wristband) {
+    queryParams["wristband"] = query.wristband;
+  }
+  if (query.color) {
+    queryParams["color"] = query.color
+  }
+
+  const { data: brand } = useGetBrandQuery(brandSlug);
+
+  const {
+    data: watchs,
+    isLoading,
+    isError,
+  } = useGetBrandListWatchQuery({ slug: brandSlug, queryParams });
+
+  const activeSortType = useSelector((state) => state.sort.sortBy.type);
+
   const [showSortMenu, setShowSortMenu] = useState(false);
   const [showProperties, setShowProperties] = useState(true);
-  const brandDescriptionData = brand.description
+  const [priceValue, setPriceValue] = useState([0, 0]);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  useEffect(() => {
+    if (!isLoading && !isError && watchs?.length > 0) {
+      const maxPrice = watchs.reduce((acc, watch) => {
+        return watch.price > acc ? watch.price : acc;
+      }, 0);
+      setPriceValue([0, maxPrice]);
+    }
+  }, [isLoading, isError, watchs]);
+
+  //for PriceFilter component
+  function handleChanges(val) {
+   /*  setCurrentPage(1); */
+    setPriceValue(val);
+  }
+  let content = null;
+
+  if (!isLoading && isError) {
+    content = <ErrorMsg message="Произошла ошибка! Попробуйте еще раз!" />;
+  }
+  if (!isLoading && !isError && watchs?.length === 0) {
+    content = <ErrorMsg message="Товары по данному запросу не найдены!" />;
+  }
+
+  if (!isLoading && !isError && watchs?.length > 0) {
+    let watch_items = watchs;
+    if (activeSortType) {
+      if (activeSortType === "new") {
+        const newWatchItems = [...watch_items];
+        watch_items = newWatchItems.sort(
+          (a, b) => new Date(b.created_at) - new Date(a.created_at)
+        );
+      }
+      if (activeSortType === "asc") {
+        const newWatchItems = [...watch_items];
+        watch_items = newWatchItems.sort((a, b) => a.price - b.price);
+      }
+      if (activeSortType === "desc") {
+        watch_items.slice().sort((a, b) => b.price - a.price);
+      }
+      if (activeSortType === "discount") {
+        watch_items = watch_items.filter((w) => w.discount > 0);
+      }
+    }
+    //price filter
+    watch_items = watch_items.filter(
+      (w) => w.price >= priceValue[0] && w.price <= priceValue[1]
+    );
+
+    content = <WatchList watchs={watch_items} brandPage />;
+  }
+
   return (
     <Layout>
       <Head>
-        <title>00</title>
+        <title>{brand?.title}</title>
       </Head>
       <Row className={styles.brand_container}>
         <Col lg={3} className={styles.right}>
@@ -45,176 +133,53 @@ export default function Brand({ brand, products }) {
           >
             <Breadcrumb.Item>Головна</Breadcrumb.Item>
             <Breadcrumb.Item>Бренди</Breadcrumb.Item>
-            <Breadcrumb.Item>{brand.title}</Breadcrumb.Item>
+            <Breadcrumb.Item>{brand?.title}</Breadcrumb.Item>
           </Breadcrumb>
-          {/*  man or woman type */}
-          <hr />
-          <div className={styles.brand_container_properties}>
-            <div className={styles.brand_container_properties_top}>
-              <h4>Тип годинника</h4>
-            </div>
-            <div
-              className={
-                showProperties
-                  ? styles.brand_container_variants
-                  : styles.brand_container_variants_hidden
-              }
-            >
-              <label htmlFor="mantype">
-                <input id="mantype" type="checkbox" value="mantype" />
-                Чоловічий годинник
-              </label>
-              <label htmlFor="womantype">
-                <input id="womantypetype" type="checkbox" value="womantype" />
-                Жіночий годинник
-              </label>
-            </div>
-          </div>
 
-          <hr />
-          {/*   brand */}
-
-          <div className={styles.brand_container_properties}>
-            <div className={styles.brand_container_properties_top}>
-              <h4>Тип годинника</h4>
-            </div>
-            <div
-              className={
-                showProperties
-                  ? styles.brand_container_variants
-                  : styles.brand_container_variants_hidden
-              }
-            >
-              <label htmlFor="mantype">
-                <input id="mantype" type="checkbox" value="mantype" />
-                Чоловічий годинник
-              </label>
-              <label htmlFor="womantype">
-                <input id="womantypetype" type="checkbox" value="womantype" />
-                Жіночий годинник
-              </label>
-            </div>
-          </div>
-
-
-          <hr />
-
-          {/* glass */}
-
-          <div className={styles.brand_container_properties}>
-            <div className={styles.brand_container_properties_top}>
-              <h4>Скло</h4>
-            </div>
-            <div
-              className={
-                showProperties
-                  ? styles.brand_container_variants
-                  : styles.brand_container_variants_hidden
-              }
-            >
-              <label htmlFor="sapfir">
-                <input id="sapfir" type="checkbox" value="sapfir" />
-                Сапфірове
-              </label>
-              <label htmlFor="mineral">
-                <input id="mineral" type="checkbox" value="mineral" />
-                Мінеральне
-              </label>
-            </div>
-          </div>
-
-          <hr />
-
-          {/*  wristband */}
-
-          <div className={styles.brand_container_properties}>
-            <div className={styles.brand_container_properties_top}>
-              <h4>Браслет</h4>
-              {/*    {
-                <button onClick={() => setShowProperties(!showProperties)}>
-                  {showProperties ? (
-                    <i class="bi bi-arrow-up-circle"></i>
-                  ) : (
-                    <i class="bi bi-arrow-down-circle"></i>
-                  )}
-                </button>
-              } */}
-            </div>
-            <div
-              className={
-                showProperties
-                  ? styles.brand_container_variants
-                  : styles.brand_container_variants_hidden
-              }
-            >
-              <label htmlFor="steel">
-                <input id="steel" type="checkbox" value="steel" />
-                Нержавіюча сталь
-              </label>
-              <label htmlFor="leather">
-                <input id="leather" type="checkbox" value="leather" />
-                Шкіряний (М'який, комфортний)
-              </label>
-              <label htmlFor="rubber">
-                <input id="rubber" type="checkbox" value="rubber" />
-                Каучуковий
-              </label>
-            </div>
-          </div>
-
-          <hr />
+          <FilterProperties 
+            showProperties={showProperties} 
+            brandPage 
+            onHandleChanges={handleChanges}
+            priceValue={priceValue}
+            watchs={watchs}
+          />
         </Col>
         <Col lg={9} className={styles.left}>
-          <div
-            className={styles.brand_sort}
-            onClick={() => setShowSortMenu(!showSortMenu)}
-          >
-            <span>
-              <i class="bi bi-filter-left"></i>
-            </span>
-          </div>
-          <div
-            className={
-              showSortMenu
-                ? styles.brand_sort_dropdown
-                : styles.brand_sort_dropdown_hidden
-            }
-          >
-            <ul className={styles.brand_sort_dropdown_list}>
-              <li className={styles.brand_sort_dropdown_list_item}>
-                <span>Спочатку новіші</span>
-              </li>
-              <li className={styles.brand_sort_dropdown_list_item}>
-                <span>Сортувати по вартості: спочатку дешевші</span>
-              </li>
-              <li className={styles.brand_sort_dropdown_list_item}>
-                <span>Сортувати по вартості: спочатку дорожчі</span>
-              </li>
-            </ul>
-          </div>
+          <Sort
+            showSortMenu={showSortMenu}
+            setShowSortMenu={setShowSortMenu}
+            activeSortType={activeSortType}
+          />
           <h2 className={styles.brand_title}>
-            Брендові годинники { brand.title }
+            Брендові годинники {brand?.title}
           </h2>
-          <WatchList watchs={products}/>
+
+          {content}
+
           <div className={styles.brand_description}>
             <div className={styles.brand_description_img_container}>
-              <img src='' />
+              <img src={brand?.brand_image} />
             </div>
             <div className={styles.brand_description_content}>
               <p className={styles.brand_description_conten_title}>
-                Ми офіційний продавець марки { brand.title } в Україні, з
+                Ми офіційний продавець марки {brand?.title} в Україні, з
                 обслуговуванням клієнтів тільки в офіційних сервісних центрах.
               </p>
               <div className={styles.brand_description_content_body}>
                 <p className={styles.brand_description_content_body_img}>
-                  <img src={brand.description_image}/>
+                  <img src={brand?.description_image} />
                 </p>
-              <div dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(brandDescriptionData)}}></div> 
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: DOMPurify.sanitize(brand?.description),
+                  }}
+                ></div>
               </div>
             </div>
           </div>
         </Col>
       </Row>
     </Layout>
-    );
+  );
 }
+
