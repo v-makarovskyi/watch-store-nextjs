@@ -1,0 +1,12 @@
+.resetButton {
+    margin-top: 1.5rem;
+    min-width: 12rem;
+    padding: .5rem;
+    border: none;
+    border-radius: 10px;
+    background: red;
+    color: #ffffff;
+}
+.resetButton:hover {
+    background: crimson;
+}
