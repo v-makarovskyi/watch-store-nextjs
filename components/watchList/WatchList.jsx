@@ -4,8 +4,21 @@ import styles from "./watchlist.module.css";
 import WatchCard from "../watchcard/WatchCard";
 import Button from "../button/Button";
 import WatchListLoader from "../loader/shop/WatchListLoader";
+import CardShowMore from "../watchcard/CardShowMore";
 
-export default function WatchList({ home, watchs, brandPage, categoryPage }) {
+export default function WatchList({
+  home,
+  watchs,
+  searchPage,
+  brandPage,
+  categoryPage,
+  nextFourWatchs,
+  onHandleNextFourWatchs,
+  pageStart,
+  countOfPage,
+  next, 
+  onHandleNext
+}) {
   const router = useRouter();
   const { isLoading } = router;
   const [activeIndex, setActiveIndex] = useState(0);
@@ -22,6 +35,9 @@ export default function WatchList({ home, watchs, brandPage, categoryPage }) {
     setNewWatchs(newProducts);
   };
 
+
+  const watchsLength = watchs?.length;
+
   let content;
 
   if (isLoading) {
@@ -33,18 +49,38 @@ export default function WatchList({ home, watchs, brandPage, categoryPage }) {
 
     content = loaderData?.map((loader) => <>{loader}</>);
   } else {
-    content = (
+    if (searchPage) {
+      content = (
+        <>
+          {
+            watchs?.slice(pageStart, pageStart + countOfPage).map((watch) => (
+              <>
+                <WatchCard key={watch.id} item={watch} />
+              </>
+            ))
+          }
+        </>
+      )
+    } else {
+      let index = home ? next : nextFourWatchs
+       content = (
       <>
         {(activeIndex === 1
           ? newWatchs
           : activeIndex === 2
           ? hitWatchs
           : watchs
-        )?.map((w) => (
-          <WatchCard key={w.id} item={w} />
-        ))}
+        )
+          ?.slice(0, index)
+          ?.map((w) => (
+            <>
+              <WatchCard key={w.id} item={w} />
+            </>
+          ))}
       </>
     );
+    }
+   
   }
 
   return (
@@ -92,12 +128,35 @@ export default function WatchList({ home, watchs, brandPage, categoryPage }) {
           </Button>
         </div>
       )}
-      <div
-        className={styles.watchlist_card_wrapper}
-        style={{ justifyContent: home ? "center" : "flex-start" }}
-      >
-        {content}
+      <div className={styles.watchlist_card_wrapper}>
+        <div
+          className={styles.wrapp}
+          style={{
+            display: "grid",
+            gridTemplateColumns:
+              !home && !searchPage ? "1fr 1fr 1fr 1fr" : "1fr 1fr 1fr 1fr 1fr",
+          }}
+        >
+          {content}
+          {!home && nextFourWatchs < watchsLength && (
+            <CardShowMore count="4" onHandleNext={onHandleNextFourWatchs} />
+          )}
+        </div>
       </div>
+      {home &&  next < watchsLength && (
+        <button
+          style={{
+            border: "none",
+            padding: ".7rem",
+            borderRadius: "20px",
+            background: "#0c7918",
+            color: "#ffffff",
+          }}
+          onClick={onHandleNext}
+        >
+          Показать больше
+        </button>
+      )}
     </div>
   );
 }
