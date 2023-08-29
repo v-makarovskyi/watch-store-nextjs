@@ -1,0 +1,25 @@
+
+.list > li {
+    display: inline-block;
+    margin-right: 1rem;
+}
+
+.list > li > .btn {
+    border: 1px solid #ffd3d3;
+    padding: .5rem .7rem;
+    background: inherit;
+    width: 2.5rem;
+    height: 2.5em;
+    font-size: 1.1rem;
+    color: #434343;
+    line-height: 27px;
+}
+
+.list > li:hover {
+    background: rgb(250, 215, 215);
+}
+
+.list > li > .btn.active {
+    background: red;
+    color: #ffffff;
+}
