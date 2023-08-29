@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import Head from "next/head";
-import { useParams, usePathname, useSearchParams } from "next/navigation";
-
+import { useCardShowMore } from "../../hooks/use-card-show-more";
 import DOMPurify from "isomorphic-dompurify";
 import Layout from "../../components/layout/Layout";
 import { Row, Col, Breadcrumb } from "react-bootstrap";
@@ -25,7 +24,7 @@ import styles from "./brand.module.css";
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (context) => {
     const brandSlug = context.query.brandSlug;
-   store.dispatch(getBrand.initiate(brandSlug));
+    store.dispatch(getBrand.initiate(brandSlug));
     store.dispatch(
       getBrandListWatch.initiate({ slug: brandSlug, queryParams: {} })
     );
@@ -52,7 +51,7 @@ export default function Brand({ query }) {
     queryParams["wristband"] = query.wristband;
   }
   if (query.color) {
-    queryParams["color"] = query.color
+    queryParams["color"] = query.color;
   }
 
   const { data: brand } = useGetBrandQuery(brandSlug);
@@ -70,6 +69,8 @@ export default function Brand({ query }) {
   const [priceValue, setPriceValue] = useState([0, 0]);
   const [currentPage, setCurrentPage] = useState(1);
 
+  const { nextFourWatchs, handleNextFourWatchs } = useCardShowMore();
+
   useEffect(() => {
     if (!isLoading && !isError && watchs?.length > 0) {
       const maxPrice = watchs.reduce((acc, watch) => {
@@ -81,7 +82,7 @@ export default function Brand({ query }) {
 
   //for PriceFilter component
   function handleChanges(val) {
-   /*  setCurrentPage(1); */
+    /*  setCurrentPage(1); */
     setPriceValue(val);
   }
   let content = null;
@@ -107,7 +108,7 @@ export default function Brand({ query }) {
         watch_items = newWatchItems.sort((a, b) => a.price - b.price);
       }
       if (activeSortType === "desc") {
-        watch_items.slice().sort((a, b) => b.price - a.price);
+        watch_items = watch_items.slice().sort((a, b) => b.price - a.price);
       }
       if (activeSortType === "discount") {
         watch_items = watch_items.filter((w) => w.discount > 0);
@@ -118,7 +119,14 @@ export default function Brand({ query }) {
       (w) => w.price >= priceValue[0] && w.price <= priceValue[1]
     );
 
-    content = <WatchList watchs={watch_items} brandPage />;
+    content = (
+      <WatchList
+        watchs={watch_items}
+        brandPage
+        nextFourWatchs={nextFourWatchs}
+        onHandleNextFourWatchs={handleNextFourWatchs}
+      />
+    );
   }
 
   return (
@@ -136,9 +144,9 @@ export default function Brand({ query }) {
             <Breadcrumb.Item>{brand?.title}</Breadcrumb.Item>
           </Breadcrumb>
 
-          <FilterProperties 
-            showProperties={showProperties} 
-            brandPage 
+          <FilterProperties
+            showProperties={showProperties}
+            brandPage
             onHandleChanges={handleChanges}
             priceValue={priceValue}
             watchs={watchs}
@@ -182,4 +190,3 @@ export default function Brand({ query }) {
     </Layout>
   );
 }
-
