@@ -29,7 +29,12 @@ export default function Home() {
   const router = useRouter()
   const query = router.query
   
-  const { isLoading, isError, data } = useGetAllWatchsQuery(query)
+  const { data:watchs } = useGetAllWatchsQuery(query)
+
+  const [next, setNext] = useState(5) 
+  const handleNext = () => {
+    setNext(next + 5)
+  }
 
   return (
     <Layout>
@@ -40,7 +45,7 @@ export default function Home() {
       <Categories />
       <Brands />
       <Promo />
-      <WatchList home watchs={data} />
+      <WatchList home watchs={watchs} next={next} onHandleNext={handleNext} />
       <GeneralText />
     </Layout>
   );
