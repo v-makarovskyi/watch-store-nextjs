@@ -2,10 +2,10 @@ export const watchtypeFilterData = [
   {
     id: 0,
     keyword: "watch_type",
-    title: "Тип годинника",
+    title: "Тип часов",
     variants: [
-      { name: "Чоловічий", value: "m" },
-      { name: "Жіночий", value: "w" },
+      { name: "Мужские", value: "мужские" },
+      { name: "Женские", value: "женские" },
     ],
   },
 ]
@@ -30,10 +30,10 @@ export const glassFilterData = [
   {
     id: 2,
     keyword: "glass",
-    title: "Тип скла",
+    title: "Тип стекла",
     variants: [
-      { name: "Сапфірове", value: "sapf" },
-      { name: "Мінеральне", value: "min" },
+      { name: "Сапфировое", value: "сапфировое" },
+      { name: "Минеральное", value: "минеральное" },
     ],
   },
 ]
@@ -46,9 +46,9 @@ export const wristbandFilterData = [
     keyword: "wristband",
     title: "Браслет",
     variants: [
-      { name: "Стальний", value: "steel" },
-      { name: "Шкіряний", value: "leather" },
-      { name: "Каучуковий", value: "rubber" },
+      { name: "Стальной", value: "сталь" },
+      { name: "Шкіряний", value: "кожаный" },
+      { name: "Каучуковий", value: "каучуковый" },
     ],
   },
 ]
