@@ -9,6 +9,7 @@ import FilterProperties from "../../components/shop/shop-filters/FilterPropertie
 import { wrapper } from "../../redux/store";
 import Sort from "../../components/shop/sort-block/Sort";
 import ErrorMsg from "../../components/common/errorMsg/ErrorMsg";
+import { useCardShowMore } from "../../hooks/use-card-show-more";
 import styles from "./category.module.css";
 import {
   getCategory,
@@ -43,6 +44,8 @@ export default function Category({ query }) {
   const [showSortMenu, setShowSortMenu] = useState(false);
   const [showProperties, setShowProperties] = useState(true);
   const [priceValue, setPriceValue] = useState([0, 0]);
+
+  const { nextFourWatchs, handleNextFourWatchs } = useCardShowMore();
 
   const {
     data: category,
@@ -132,7 +135,7 @@ export default function Category({ query }) {
           watch_items = newAllWatchItems.sort((a, b) => a.price - b.price);
         }
         if (activeSortType === "desc") {
-          watch_items.slice().sort((a, b) => b.price - a.price);
+          watch_items = watch_items.slice().sort((a, b) => b.price - a.price);
         }
         if (activeSortType === "discount") {
           watch_items = watch_items.filter((w) => w.discount > 0);
@@ -143,7 +146,14 @@ export default function Category({ query }) {
         (w) => w.price >= priceValue[0] && w.price <= priceValue[1]
       );
 
-      content = <WatchList watchs={watch_items} />;
+      content = (
+        <WatchList
+          watchs={watch_items}
+          nextFourWatchs={nextFourWatchs}
+          onHandleNextFourWatchs={handleNextFourWatchs}
+          categoryPage
+        />
+      );
     }
   } else {
     if (!isLoading && !isError && watchs?.length > 0) {
@@ -160,7 +170,7 @@ export default function Category({ query }) {
           watch_items = newWatchItems.sort((a, b) => a.price - b.price);
         }
         if (activeSortType === "desc") {
-          watch_items.slice().sort((a, b) => b.price - a.price);
+          watch_items = watch_items.slice().sort((a, b) => b.price - a.price);
         }
         if (activeSortType === "discount") {
           watch_items = watch_items.filter((w) => w.discount > 0);
@@ -171,7 +181,13 @@ export default function Category({ query }) {
         (w) => w.price >= priceValue[0] && w.price <= priceValue[1]
       );
 
-      content = <WatchList watchs={watch_items} />;
+      content = (
+        <WatchList
+          watchs={watch_items}
+          nextFourWatchs={nextFourWatchs}
+          onHandleNextFourWatchs={handleNextFourWatchs}
+        />
+      );
     }
   }
 
