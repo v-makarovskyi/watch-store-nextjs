@@ -29,6 +29,13 @@ export const watchsApi = createApi({
     },
   }),
   endpoints: (builder) => ({
+    getSearchResult: builder.query({
+      query: (searchText) => {
+        return {
+          url: `watchs?search=${searchText}`,
+        };
+      },
+    }),
     getAllWatchs: builder.query({
       query: (queryParams) => {
         const queryString = generateQueryString("watchs?", queryParams);
@@ -43,7 +50,6 @@ export const watchsApi = createApi({
           url: `watchs/${slug}`,
         };
       },
-      
     }),
     getCategories: builder.query({
       query: () => {
@@ -59,34 +65,38 @@ export const watchsApi = createApi({
         };
       },
     }),
-    getCategoryListWatchs: (builder).query({
+    getCategoryListWatchs: builder.query({
       query: (args) => {
-        const { slug, queryParams } = args
-        const queryString = generateQueryString(`categories/${slug}?`, queryParams)
+        const { slug, queryParams } = args;
+        const queryString = generateQueryString(
+          `categories/${slug}?`,
+          queryParams
+        );
         return {
-          url: queryString
+          url: queryString,
         };
       },
     }),
     getBrands: builder.query({
-      query: () => ({url: 'brands'})
+      query: () => ({ url: "brands" }),
     }),
     getBrand: builder.query({
-      query: (slug) => ({ url: `brand_single/${slug}` })
+      query: (slug) => ({ url: `brand_single/${slug}` }),
     }),
-    getBrandListWatch: (builder).query({
-     query: (args) => {
-      const {slug, queryParams} = args
-      const queryString = generateQueryString(`brand/${slug}?`, queryParams)
-      return {
-        url: queryString
-      }
-     }
-    })
+    getBrandListWatch: builder.query({
+      query: (args) => {
+        const { slug, queryParams } = args;
+        const queryString = generateQueryString(`brand/${slug}?`, queryParams);
+        return {
+          url: queryString,
+        };
+      },
+    }),
   }),
 });
 
 export const {
+  useGetSearchResultQuery,
   useGetAllWatchsQuery,
   useGetSingleWatchQuery,
   useGetCategoriesQuery,
@@ -99,6 +109,7 @@ export const {
 } = watchsApi;
 
 export const {
+  getSearchResult,
   getAllWatchs,
   getSingleWatch,
   getCategories,
