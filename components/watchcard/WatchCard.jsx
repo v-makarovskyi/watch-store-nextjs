@@ -3,6 +3,8 @@ import ImageGallery from "react-image-gallery";
 import styles from "./watchcard.module.css";
 import Link from "next/link";
 
+
+
 function CardSlider({ elems }) {
   const images = elems?.map((elem) => {
     const item = {
@@ -87,7 +89,7 @@ function LeftNav(props) {
 export default function WatchCard({ item }) {
   const ref = useRef(null);
   const [showFavorites, setShowFavorites] = useState(false);
-
+ 
   useEffect(() => {
     if (showFavorites) {
       ref.current.style.transform = "rotate(0deg)";
@@ -97,7 +99,8 @@ export default function WatchCard({ item }) {
   }, [showFavorites]);
 
   return (
-    <div className={styles.watchlist_card}>
+    <div 
+    className={styles.watchlist_card}>
       {item.hit && (
         <div className={styles.watchlist_card_badge}>
           <span>XIT</span>
