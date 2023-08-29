@@ -1,0 +1,28 @@
+.container {
+  padding-left: 4rem;
+  padding-right: 4rem;
+  position: relative;
+}
+
+.title {
+    color: #434343;
+    font-weight: bold;
+    text-align: start;
+    padding-top: 1rem;
+    margin-bottom: -1rem;
+}
+
+.top {
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.pagination {
+  padding-left: 2rem;
+  padding-bottom: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+}
