@@ -1,15 +1,20 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 
 export const useCardShowMore = () => {
-    const [nextFourWatchs, setNextFourWatchs] = useState(4)
+  const router = useRouter();
+  const [nextFourWatchs, setNextFourWatchs] = useState(4);
 
-    const handleNextFourWatchs = () => {
-        setNextFourWatchs(nextFourWatchs => nextFourWatchs + 4)
-    }
+  useEffect(() => {
+    setNextFourWatchs(4);
+  }, [router.query.categorySlug]);
 
-    return {
-        nextFourWatchs,
-        handleNextFourWatchs
-    }
+  const handleNextFourWatchs = (categorySlug) => {
+    setNextFourWatchs((nextFourWatchs) => nextFourWatchs + 4);
+  };
 
-}
+  return {
+    nextFourWatchs,
+    handleNextFourWatchs,
+  };
+};
