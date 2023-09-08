@@ -1,5 +1,6 @@
 import React from "react";
-import styles from "../header.module.css";
+import { Row, Col } from "react-bootstrap";
+import styles from "../header.module.scss";
 
 export default function HeaderTop({
   languages,
@@ -9,8 +10,9 @@ export default function HeaderTop({
   currentLanguage,
 }) {
   return (
-    <div className={styles.header_top}>
-      <ul className={styles.header_top_list}>
+    <Row className={styles.top}>
+      <Col md={10}  className="p-0">
+       <ul className={styles.top_list}>
         <li className={styles.header_top_list_item}>
           <span>Возврат и Обмен</span>
         </li>
@@ -39,6 +41,8 @@ export default function HeaderTop({
           <span>Доставка, оплата</span>
         </li>
       </ul>
+      </Col>
+     <Col md={2} className="pe-0">
       <div className={styles.languages}>
         <button
           className={styles.languages_btn}
@@ -69,6 +73,8 @@ export default function HeaderTop({
           </ul>
         </div>
       </div>
-    </div>
+     </Col>
+     
+    </Row>
   );
 }
