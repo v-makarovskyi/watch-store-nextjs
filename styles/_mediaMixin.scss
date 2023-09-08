@@ -1,12 +1,13 @@
 $breackpoint-xs: 300px;
-$breackpoint-sm: 600px;
-$breackpoint-md: 960px;
-$breackpoint-lg: 1260px;
-$breackpoint-xl: 1900px;
+$breackpoint-sm: 576px;
+$breackpoint-md: 768px;
+$breackpoint-lg: 992px;
+$breackpoint-xl: 1200px;
+$breackpoint-xxl: 1490px;
 
 @mixin media($media) {
     @if $media == xs {
-        @media screen and (max-width: $breackpoint-xs) {@content;}
+        @media screen and (max-width: $breackpoint-sm) {@content;}
     }
     @else if $media == sm {
         @media screen and (min-width: $breackpoint-sm) and (max-width: $breackpoint-md) {@content;}
@@ -15,9 +16,9 @@ $breackpoint-xl: 1900px;
         @media screen and (min-width: $breackpoint-md) and (max-width: $breackpoint-lg) {@content;}
     }
     @else if $media == lg {
-        @media screen and (min-width: $breackpoint-lg) {@content;}
+        @media screen and (min-width: $breackpoint-lg) and (max-width: 1200px) {@content;}
     }
     @else if $media == xl {
-        @media screen and (min-width: $breackpoint-xl) {@content;}
+        @media screen and (min-width: $breackpoint-xl) and (max-width: 1490px) {@content;}
     }
-}
+};
