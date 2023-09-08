@@ -1,4 +1,4 @@
-import styles from "./brands.module.css";
+import styles from "./brands.module.scss";
 
 const brands = [
   { id: 1, image: "/images/brands/atlantic.webp" },
@@ -12,10 +12,10 @@ const brands = [
 export default function Brands() {
   return (
     <div className={styles.brands}>
-      <h4 className={styles.brands_title}>Популярні бренди</h4>
-      <div className={styles.brands_wrapper}>
+      <h4 className={styles.title}>Популярні бренди</h4>
+      <div className={styles.wrapper}>
         {brands.map((brand) => (
-          <div key={brand.id} className={styles.brands_img_container}>
+          <div key={brand.id} className={styles.img_container}>
             <img
               src={brand.image}
               className={styles.brands_img}
@@ -24,7 +24,7 @@ export default function Brands() {
           </div>
         ))}
       </div>
-      <p className={styles.brands_bottom}>
+      <p className={styles.bottom}>
         Бережіть кожну мить, кожну посмішку, хвилину, день. Наповнюйте їх
         коханням, не баріться, серце рахує так швидко...
       </p>
