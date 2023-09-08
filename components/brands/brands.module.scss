@@ -1,0 +1,82 @@
+@use "../../styles/mediaMixin" as media;
+
+.brands {
+  @include media.media(xs) {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+  padding-left: 4rem;
+  padding-right: 4rem;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 3rem;
+}
+
+.title {
+  text-align: start;
+  color: #434343;
+  line-height: 30px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding-top: 0.3rem;
+}
+
+.wrapper {
+  @include media.media(xs) {
+    display: flex;
+    flex-flow: row wrap;
+    gap: .5rem
+  }
+  @include media.media(sm) {
+    display: flex;
+    flex-flow: row wrap;
+    gap: .5rem
+  }
+  @include media.media(md) {
+    display: flex;
+    flex-flow: row wrap;
+    gap: .5rem
+  }
+  gap: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.img_container {
+  @include media.media(xs) {
+    width: 30%;
+  }
+  @include media.media(sm) {
+    width: 30%;
+  }
+  @include media.media(md) {
+    width: 30%;
+  }
+  width: 28%;
+  padding: 0 0.5rem;
+  border: 1px solid lightgray;
+  border-radius: 10px;
+  box-shadow: 1px 0px 2px 1px #e8e4e4;
+  cursor: pointer;
+  transition: border 0.4s ease;
+}
+
+.brands_img_container:hover {
+  border: 1px dotted red;
+  box-shadow: none;
+}
+
+.brands_img_container img {
+  width: 100%;
+  height: auto;
+}
+
+.bottom {
+  padding-top: 1.5rem;
+  align-self: center;
+  color: red;
+  font-style: italic;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
