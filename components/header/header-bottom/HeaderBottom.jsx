@@ -1,86 +1,71 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { Container, Row, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 import { clearSortBy } from "../../../redux/sortSlice";
+import Heart from "../../../svg/heart";
+import Cart from "../../../svg/cart";
 import Link from "next/link";
-import styles from "../header.module.css";
+import styles from "../header.module.scss";
 
 export default function HeaderBottom({
   categories,
   brands,
+  width,
   activeCategory,
   onHandleActiveCategory,
   showBrands,
   setShowBrands,
 }) {
   const dispatch = useDispatch();
+  const { cartTotalQuantity } = useSelector((state) => state.cart)
+  console.log(width)
 
   return (
-    <div className={styles.header_bottom}>
-      <ul className={styles.header_bottom_list}>
-        {categories?.map((category) =>
-          category.name === "Бренд" ? (
-            <li key={category.id} className={styles.header_bottom_list_item}>
-              <button
-                className={
-                  activeCategory.id === category.id
-                    ? `${styles.header_bottom_list_item_btn} ${styles.header_bottom_list_item_btn_active}`
-                    : `${styles.header_bottom_list_item_btn}`
-                }
-                onClick={() => {
-                  onHandleActiveCategory(category.id);
-                  setShowBrands(!showBrands);
-                }}
-              >
-                {category.name}
-              </button>
-            </li>
-          ) : (
-            <Link href={`/categories/${category.slug}`}>
-              <li key={category.id} className={styles.header_bottom_list_item}>
-                <button
-                  className={
-                    activeCategory.id === category.id
-                      ? `${styles.header_bottom_list_item_btn} ${styles.header_bottom_list_item_btn_active}`
-                      : `${styles.header_bottom_list_item_btn}`
-                  }
-                  onClick={() => {
-                    onHandleActiveCategory(category.id);
-                    dispatch(clearSortBy());
-                  }}
-                >
-                  {category.name}
-                </button>
-              </li>
-            </Link>
-          )
-        )}
-      </ul>
-      {activeCategory.name === "Бренд" && (
-        <div
-          className={
-            !showBrands
-              ? `${styles.header_bottom_brandslist_hidden}`
-              : `${styles.header_bottom_brandslist}`
-          }
-        >
-          <ul>
-            {activeCategory.name === "Бренд" &&
-              brands.map((item, index) => (
-                <Link href={`/brand/${item.slug}`}>
-                  <li
-                    onClick={() => {
-                      dispatch(clearSortBy());
-                      setShowBrands(false);
-                    }}
-                    key={item.name}
-                  >
-                    {item.title}
-                  </li>
+    <Row className={styles.bottom}>
+       <Navbar expand="lg" className={styles.bottom_content}>
+      <Container>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="me-auto">
+            <NavDropdown title="Бренд" id="basic-nav-dropdown" className={styles.categoryLink}>
+              {brands?.map((item, index) => (
+                <Link href={`/brand/${item.slug}`} legacyBehavior passHref>
+                  <NavDropdown.Item key={index}>{item.title}</NavDropdown.Item>
                 </Link>
               ))}
-          </ul>
-        </div>
-      )}
-    </div>
+            </NavDropdown>
+            {categories?.map((category) =>
+                <Link href={`/categories/${category.slug}`} legacyBehavior passHref>
+                   <Nav.Link className={styles.categoryLink}>{category.name}</Nav.Link>
+                </Link>
+              )
+            }
+          </Nav>
+        </Navbar.Collapse>
+        {
+          width <= 992 && (
+            <div className={styles.header_middle_icons}>
+            <Link href="/wishlist">
+              <div className={styles.header_middle_icons_wishlist}>
+                <Heart />
+                <span>0</span>
+              </div>
+            </Link>
+    
+            <i className="bi bi-person-circle"></i>
+            <Link href='/cart'>
+               <div className={styles.cart}>
+                <Cart />
+              <span>{cartTotalQuantity}</span>
+            </div>
+            </Link>
+           
+          </div>
+          )
+        }
+      </Container>
+    </Navbar>
+    </Row>
+   
   );
 }
