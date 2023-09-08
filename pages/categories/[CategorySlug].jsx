@@ -41,6 +41,9 @@ export const getServerSideProps = wrapper.getServerSideProps(
 export default function Category({ query }) {
   const categorySlug = query.categorySlug;
 
+  const cart = useSelector((state) => state.cart)
+  console.log(cart)
+
   const [showSortMenu, setShowSortMenu] = useState(false);
   const [showProperties, setShowProperties] = useState(true);
   const [priceValue, setPriceValue] = useState([0, 0]);
