@@ -1,0 +1,23 @@
+$breackpoint-xs: 300px;
+$breackpoint-sm: 600px;
+$breackpoint-md: 960px;
+$breackpoint-lg: 1260px;
+$breackpoint-xl: 1900px;
+
+@mixin media($media) {
+    @if $media == xs {
+        @media screen and (max-width: $breackpoint-xs) {@content;}
+    }
+    @else if $media == sm {
+        @media screen and (min-width: $breackpoint-sm) and (max-width: $breackpoint-md) {@content;}
+    }
+    @else if $media == md {
+        @media screen and (min-width: $breackpoint-md) and (max-width: $breackpoint-lg) {@content;}
+    }
+    @else if $media == lg {
+        @media screen and (min-width: $breackpoint-lg) {@content;}
+    }
+    @else if $media == xl {
+        @media screen and (min-width: $breackpoint-xl) {@content;}
+    }
+}
