@@ -1,0 +1,46 @@
+@use "../../styles/mediaMixin" as media;
+
+.container {
+  background-color: bisque;
+  background-image: url("../../public/images/register-login/register.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  filter: opacity(80%);
+  font-family: "Jost", sans-serif;
+  padding-top: 2rem;
+  padding-bottom: 3rem;
+}
+
+.wrapper {
+  align-items: center;
+  justify-content: center;
+
+  .content_wrapper {
+    padding: 1rem 1rem 3rem;
+    background: #f5eded;
+    -webkit-box-shadow: 4px 3px 10px 2px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 4px 3px 10px 2px rgba(0, 0, 0, 0.75);
+    box-shadow: 4px 3px 10px 2px rgba(0, 0, 0, 0.75);
+  }
+}
+
+.title {
+  text-align: center;
+}
+
+.subtitle {
+  text-align: center;
+  line-height: 27px;
+}
+
+.login {
+  color: grey;
+  padding-bottom: 0.8rem;
+  span {
+    color: blue;
+    text-decoration: underline;
+  }
+}
+
+/*  */
