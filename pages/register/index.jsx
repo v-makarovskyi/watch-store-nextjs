@@ -1,12 +1,48 @@
-import React from "react";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 import Head from "next/head";
 import Link from "next/link";
-import { Container, Row, Col, Form, FloatingLabel, Button } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  FloatingLabel,
+  Button,
+} from "react-bootstrap";
 import Layout from "../../components/layout/Layout";
 import { GoogleButton } from "../../components/button/GoogleButton";
 import styles from "./register.module.scss";
 
+const schema = Yup.object().shape({
+  name: Yup.string().required("* Обязательное поле").label("Имя"),
+  lastName: Yup.string().required("* Обязательное поле").label("Фамилия"),
+  email: Yup.string()
+    .required("* Обязательное поле")
+    .email("Почта должна быть в формате example@test.de")
+    .label("Электронная почта"),
+  password: Yup.string()
+    .required()
+    .min(6, "Пароль слишком короткий — минимум 6 символов.")
+    .matches(/[a-zA-Z]/, "Пароль может содержать только латинские буквы")
+    .label("Пароль"),
+  passwordConfirm: Yup.string()
+    .required()
+    .oneOf([Yup.ref("password"), null], "Пароли должны совпадать!")
+    .label("Повторите пароль"),
+});
+
 const RegisterPage = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ resolver: yupResolver(schema) });
+
+  const onSubmit = (data) => console.log(data);
+
   return (
     <Layout>
       <Head>
@@ -27,24 +63,40 @@ const RegisterPage = () => {
                 Здесь можно создать аккаунт WatchStore
               </h6>
               <p className={styles.login}>
-                Есть аккаунт? <Link href="/login"><span>Войти на сайт</span></Link>
+                Есть аккаунт?{" "}
+                <Link href="/login">
+                  <span>Войти на сайт</span>
+                </Link>
               </p>
               <GoogleButton />
             </div>
 
-            <Form style={{ textAlign: "start" }} className="pt-3">
+            <Form
+              onSubmit={handleSubmit(onSubmit)}
+              style={{ textAlign: "start" }}
+              className="pt-3"
+            >
               <Form.Group className="mb-3" controlId="formBasicFirstName">
-                <FloatingLabel controlId="floatingInput" label="Имя">
-                  <Form.Control type="text" placeholder="Введите ваше имя" />
+                <FloatingLabel controlId="nameInput" label="Имя">
+                  <Form.Control
+                    {...register("name")}
+                    name="name"
+                    type="text"
+                    placeholder="Введите ваше имя"
+                  />
                 </FloatingLabel>
+                <Form.Text>{errors.name?.message}</Form.Text>
               </Form.Group>
               <Form.Group className="mb-3" controlId="formBasicLastName">
-                <FloatingLabel controlId="floatingInput" label="Фамилия">
+                <FloatingLabel controlId="lastNameInput" label="Фамилия">
                   <Form.Control
+                    {...register("lastName")}
+                    name="lastName"
                     type="text"
                     placeholder="Введите вашу фамилию"
                   />
                 </FloatingLabel>
+                <Form.Text>{errors.lastName?.message}</Form.Text>
               </Form.Group>
               {/* <Form.Group className="mb-3" controlId="formBasicPhone">
                 <FloatingLabel controlId="floatingInput" label="Номер телефона">
@@ -55,17 +107,26 @@ const RegisterPage = () => {
                 </Form.Text>
               </Form.Group> */}
               <Form.Group className="mb-3" controlId="formBasicEmail">
-                <FloatingLabel
-                  controlId="floatingInput"
-                  label="Электронная почта"
-                >
-                  <Form.Control type="email" placeholder="Введите email" />
+                <FloatingLabel controlId="emailInput" label="Электронная почта">
+                  <Form.Control
+                    {...register("email", { required: "Email обязательно!" })}
+                    name="email"
+                    type="email"
+                    placeholder="Введите email"
+                  />
                 </FloatingLabel>
+                <Form.Text>{errors.email?.message}</Form.Text>
               </Form.Group>
               <Form.Group className="mb-3" controlId="formBasicPassword">
-                <FloatingLabel controlId="floatingInput" label="Пароль ">
-                  <Form.Control type="password" placeholder="Введите пароль" />
+                <FloatingLabel controlId="passwordInput" label="Пароль ">
+                  <Form.Control
+                    {...register("password")}
+                    name="password"
+                    type="password"
+                    placeholder="Введите пароль"
+                  />
                 </FloatingLabel>
+                <Form.Text>{errors.password?.message}</Form.Text>
               </Form.Group>
               <Form.Group className="mb-3" controlId="formBasicConfirmPassword">
                 <FloatingLabel
@@ -73,12 +134,17 @@ const RegisterPage = () => {
                   label="Повторите пароль"
                 >
                   <Form.Control
+                    {...register("passwordConfirm")}
+                    name="passwordConfirm"
                     type="password"
                     placeholder="Повторите пароль"
                   />
                 </FloatingLabel>
+                <Form.Text>{errors.passwordConfirm?.message}</Form.Text>
               </Form.Group>
-              <Button variant="success" className='w-100'>Зарегистрироваться</Button>
+              <Button type="submit" variant="success" className="w-100">
+                Зарегистрироваться
+              </Button>
             </Form>
           </Col>
         </Row>
