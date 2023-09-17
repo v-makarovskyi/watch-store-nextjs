@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useRouter } from "next/router";
+import { notifySuccess, notifyError } from "../../utils/toast";
+import { useRegisterUserMutation } from "../../redux/auth/authApi";
 import Head from "next/head";
 import Link from "next/link";
 import {
@@ -17,7 +20,7 @@ import { GoogleButton } from "../../components/button/GoogleButton";
 import styles from "./register.module.scss";
 
 const schema = Yup.object().shape({
-  name: Yup.string().required("* Обязательное поле").label("Имя"),
+  username: Yup.string().required("* Обязательное поле").label("Имя"),
   lastName: Yup.string().required("* Обязательное поле").label("Фамилия"),
   email: Yup.string()
     .required("* Обязательное поле")
@@ -35,13 +38,32 @@ const schema = Yup.object().shape({
 });
 
 const RegisterPage = () => {
+  const router = useRouter()
+  const [registerUser, {}] = useRegisterUserMutation()
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset
   } = useForm({ resolver: yupResolver(schema) });
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    registerUser({
+      username: data.username,
+      lastName: data.lastName,
+      email: data.email,
+      password: data.password,
+      passwordConfirm: data.passwordConfirm,
+    }).then((result) => {
+      if(result?.error) {
+        notifyError('Регистрация не удалась!')
+      } else {
+        notifySuccess(result?.data?.message)
+        router.push('/login')
+      }
+    })
+    reset()
+  }
 
   return (
     <Layout>
@@ -79,8 +101,8 @@ const RegisterPage = () => {
               <Form.Group className="mb-3" controlId="formBasicFirstName">
                 <FloatingLabel controlId="nameInput" label="Имя">
                   <Form.Control
-                    {...register("name")}
-                    name="name"
+                    {...register("username")}
+                    name="username"
                     type="text"
                     placeholder="Введите ваше имя"
                   />
