@@ -9,6 +9,12 @@ from rest_framework import generics
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import permissions
 
+class IsOwnerOrReadOnly(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        """ if request.method in permissions.SAFE_METHODS:
+            return True """
+        return obj.email == request.user.email
+
 class MyUserList(generics.ListAPIView):
     permission_classes = [IsAdminUser]
     serializer_class = MyUserSerializer
@@ -31,15 +37,9 @@ class MyUserCreate(APIView):
 
 
 class MyUserDetail(generics.RetrieveAPIView):
-    """ permission_classes = [IsAdminUser] """
+    permission_classes = [IsAdminUser|IsOwnerOrReadOnly]
     queryset = MyUser.objects.all()
     serializer_class = MyUserSerializer
-
-class IsOwnerOrReadOnly(permissions.BasePermission):
-    def has_object_permission(self, request, view, obj):
-        if request.method in permissions.SAFE_METHODS:
-            return True
-        return obj.email == request.user.email
 
 
 class MyUserUpdate(generics.UpdateAPIView):
