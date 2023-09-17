@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from mptt.models import MPTTModel, TreeForeignKey
 from ckeditor_uploader.fields import RichTextUploadingField
+from django.conf import settings
 
 
 class Category(MPTTModel):
@@ -140,6 +141,7 @@ class Watch(models.Model):
     created_at = models.DateTimeField(
         'создан', auto_now_add=True, editable=False)
     update_at = models.DateTimeField('обновлен', auto_now=True)
+    users_wishlist = models.ManyToManyField(settings.AUTH_USER_MODEL)
 
     def get_absolute_url(self):
         return reverse('watch_store:watch_detail', args=[self.slug])
